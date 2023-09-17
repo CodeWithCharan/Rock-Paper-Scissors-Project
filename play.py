@@ -10,10 +10,8 @@ REV_CLASS_MAP = {
     3: "none"
 }
 
-
 def mapper(val):
     return REV_CLASS_MAP[val]
-
 
 def calculate_winner(move1, move2):
     if move1 == move2:
@@ -37,7 +35,6 @@ def calculate_winner(move1, move2):
         if move2 == "rock":
             return "Computer"
 
-
 model = load_model("rock-paper-scissors-model.h5")
 
 cap = cv2.VideoCapture(0)
@@ -49,20 +46,33 @@ while True:
     if not ret:
         continue
 
+    # Move frames down a bit
+    frame = cv2.flip(frame, 1)
+
     # rectangle for user to play
-    cv2.rectangle(frame, (100, 100), (500, 500), (255, 255, 255), 2)
+    cv2.rectangle(frame, (20, 190), (210, 380), (255, 255, 255), 2)
     # rectangle for computer to play
-    cv2.rectangle(frame, (800, 100), (1200, 500), (255, 255, 255), 2)
+    cv2.rectangle(frame, (430, 190), (620, 380), (255, 255, 255), 2)
 
     # extract the region of image within the user rectangle
-    roi = frame[100:500, 100:500]
+    roi = frame[190:380, 20:210]
     img = cv2.cvtColor(roi, cv2.COLOR_BGR2RGB)
     img = cv2.resize(img, (227, 227))
+
+    CONFIDENCE_THRESHOLD = 0.6
 
     # predict the move made
     pred = model.predict(np.array([img]))
     move_code = np.argmax(pred[0])
-    user_move_name = mapper(move_code)
+    confidence = pred[0][move_code]
+
+    # Check if the confidence in the prediction is above the threshold
+    if confidence >= CONFIDENCE_THRESHOLD:
+        user_move_name = mapper(move_code)
+    else:
+        user_move_name = "none"
+        computer_move_name = "none"
+        winner = "Waiting..."
 
     # predict the winner (human vs computer)
     if prev_move != user_move_name:
@@ -76,18 +86,17 @@ while True:
 
     # display the information
     font = cv2.FONT_HERSHEY_SIMPLEX
-    cv2.putText(frame, "Your Move: " + user_move_name,
-                (50, 50), font, 1.2, (255, 255, 255), 2, cv2.LINE_AA)
-    cv2.putText(frame, "Computer's Move: " + computer_move_name,
-                (750, 50), font, 1.2, (255, 255, 255), 2, cv2.LINE_AA)
-    cv2.putText(frame, "Winner: " + winner,
-                (400, 600), font, 2, (0, 0, 255), 4, cv2.LINE_AA)
+    cv2.putText(frame, "Player: " + user_move_name,
+                (25, 160), font, 1, (0, 0, 0), 2, cv2.LINE_AA)
+    cv2.putText(frame, "AI: " + computer_move_name,
+                (430, 160), font, 1, (0, 0, 0), 2, cv2.LINE_AA)
+    
+    cv2.putText(frame, "Winner: " + winner, (200, 450), font, 1, (0, 0, 255), 2, cv2.LINE_AA)
 
     if computer_move_name != "none":
-        icon = cv2.imread(
-            "images/{}.png".format(computer_move_name))
-        icon = cv2.resize(icon, (400, 400))
-        frame[100:500, 800:1200] = icon
+        icon = cv2.imread("images/{}.png".format(computer_move_name))
+        icon = cv2.resize(icon, (190, 190))
+        frame[190:380, 430:620] = icon
 
     cv2.imshow("Rock Paper Scissors", frame)
 

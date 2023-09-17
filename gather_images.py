@@ -51,10 +51,12 @@ while True:
     if count == num_samples:
         break
 
-    cv2.rectangle(frame, (100, 100), (500, 500), (255, 255, 255), 2)
+    frame = cv2.flip(frame, 1)
+
+    cv2.rectangle(frame, (20, 90), (210, 280), (255, 255, 255), 2)
 
     if start:
-        roi = frame[100:500, 100:500]
+        roi = frame[90:280, 20:210]
         save_path = os.path.join(IMG_CLASS_PATH, '{}.jpg'.format(count + 1))
         cv2.imwrite(save_path, roi)
         count += 1
