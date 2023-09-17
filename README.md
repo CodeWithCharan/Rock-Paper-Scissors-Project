@@ -32,17 +32,17 @@ Follow these steps to set up and run the project:
 
 4. Activate the virtual environment:
 
-- In Command Prompt (CMD):
+    - In Command Prompt (CMD):
 
-  ```
-  venv\Scripts\activate.bat
-  ```
+        ```
+        venv\Scripts\activate.bat
+        ```
 
-- In PowerShell:
+    - In PowerShell:
 
-  ```
-  venv\Scripts\Activate.ps1
-  ```
+        ```
+        venv\Scripts\Activate.ps1
+        ```
 
 5. Install the project dependencies:
 
