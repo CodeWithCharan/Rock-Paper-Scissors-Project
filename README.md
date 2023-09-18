@@ -2,7 +2,6 @@
 
 In this project, you will play the classic game of Rock-Paper-Scissors against an AI opponent. I've created an AI model that is trained to recognize hand gestures using Keras, TensorFlow, and OpenCV. I used OpenCV to gather images and utilized a pretrained model called "SqueezeNet" using the Keras library with TensorFlow as the backend framework.
 
-<!-- Adjust the width to your desired size (e.g., 300px) -->
 <img src="RPS_thumbnail.png" alt="Rock-Paper-Scissors-thumbnail" width="800">
 
 ## Requirements
