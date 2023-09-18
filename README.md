@@ -63,7 +63,7 @@ Follow these steps to set up and run the project:
     python train.py
     ```
 
-8. Test the model on some images:
+8. Test the model on some images(optional):
     ```
     python test.py <file path>.jpg
     ```
